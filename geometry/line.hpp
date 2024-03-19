@@ -1,3 +1,6 @@
+#ifndef LINE_H
+
+
 #include <cmath>
 
 //  Describes a primitive line equation
@@ -41,3 +44,6 @@ struct line
     //static double get_C(double x1, double y1, double x2, double y2)
     //{return -(x1/(x1-x2) + y1/(y1-y2));}
 };
+
+#endif //LINE_H 
+#define LINE_H

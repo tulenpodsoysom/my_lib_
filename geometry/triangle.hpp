@@ -1,5 +1,5 @@
 #ifndef TRIANGLE_H
-// #include "point.hpp"
+#include "point.hpp"
 
 namespace geometry {
 
@@ -45,9 +45,9 @@ namespace geometry {
 
         double area()
         {
-            double a = distance(p1, p2);
-            double b = distance(p2, p3);
-            double c = distance(p3, p1);
+            double a = geometry::distance(p1, p2);
+            double b = geometry::distance(p2, p3);
+            double c = geometry::distance(p3, p1);
 
             //semiperimeter
             T sp = (a+b+c)/2.0;

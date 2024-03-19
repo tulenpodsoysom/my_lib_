@@ -1,3 +1,5 @@
+#ifndef PLANE_H
+
 #include "point.hpp"
 
 namespace geometry
@@ -11,15 +13,23 @@ namespace geometry
 
 		plane3d(point3d p1, point3d p2, point3d p3) { 
             double a, b, c;
-			a = (p2.y - p1.y) * (p3.z - p1.z) - (p2.z - p1.z) * (p3.y - p1.y);
-            b = (p2.x - p1.x) * (p3.z - p1.z) - (p2.z - p1.z) * (p3.x - p1.x);
-            c = (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
+			a = (p2.y() - p1.y()) * (p3.z() - p1.z()) - (p2.z() - p1.z()) * (p3.y() - p1.y());
+            b = (p2.x() - p1.x()) * (p3.z() - p1.z()) - (p2.z() - p1.z()) * (p3.x() - p1.x());
+            c = (p2.x() - p1.x()) * (p3.y() - p1.y()) - (p2.y() - p1.y()) * (p3.x() - p1.x());
 
-            A = a; B = -b; C = c; D = -p1.x*a + p1.y*b - p1.z*c;
+            A = a; B = -b; C = c; D = -p1.x()*a + p1.y()*b - p1.z()*c;
 		}
 
 		plane3d(point3d origin, vector3d normal)
-			: A(normal.x), B(normal.y), C(normal.z),
+			: A(normal.x()), B(normal.y()), C(normal.z()),
 			  D(-abs2(origin * normal)){};
+
+
+		double as_2d_function(double x, double y)
+		{
+			return -A / C * x - B / C * y - D / C;
+		}
 	};
 }
+#endif //PLANE_H 
+#define PLANE_H
