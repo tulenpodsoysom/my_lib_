@@ -10,8 +10,8 @@ class time_flow_program
 protected:
     bool do_cycle = false; unsigned cycle_counter = 0;
 
-    std::ostream& logger_stream = std::cout;
 public:
+    std::ostream& logger_stream = std::cout;
 
     parameters p;
     variables  v;

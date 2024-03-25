@@ -1,5 +1,5 @@
 #ifndef RECT_H
-//#include "point.hpp"
+#include "point.hpp"
 
 #include <type_traits>
 

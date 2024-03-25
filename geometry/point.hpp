@@ -43,6 +43,15 @@ template <class Point> constexpr Point middle_point(std::initializer_list<Point>
 	return middle;
 }
 
+template <class InputIt, class Point> Point middle_point(InputIt begin, InputIt end) 
+{
+	Point middle(
+		std::accumulate(begin,end,0.0,[](double a, Point b) {return a + b.x();}) / double(begin - end),
+		std::accumulate(begin,end,0.0,[](double a, Point b) {return a + b.y();}) / double(begin - end)
+	);
+	return middle;
+}
+
 template <class Point> constexpr double distance2(Point p1, Point p2) {
 	double d = 0;
 	for (auto i = 0; i < p1.size(); i++) {

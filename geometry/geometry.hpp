@@ -6,6 +6,7 @@
 #include "circle.hpp"
 #include "triangle.hpp"
 #include "plane.hpp"
+#include "polygon.hpp"
 
 #endif
 #define GEOMETRY_H

@@ -1,3 +1,6 @@
+#ifndef TRIANGULATION_DELONE_H
+
+
 #include "../../geometry/geometry.hpp"
 #include <algorithm>
 #include <initializer_list>
@@ -119,6 +122,8 @@ struct triangulation_delone {
 	static auto decode_index(int a) { return -a - 1; };
 	static auto is_encoded(int a) { return a < 0; };
 
+
+	// the main usable method
 	template <typename InputIt, typename InputIt2>
 	std::vector<triangulation_data>
 	recursive_enumerate(InputIt begin, InputIt end, InputIt2 begin_super, InputIt2 end_super) {
@@ -272,4 +277,58 @@ struct triangulation_delone {
 		}
 		return out;
 	}
+
+
+	geometry::polygon2d generate_dirichlet_cell(int cell_index, std::vector<triangulation_data>& triang_data)
+	{
+		// main problem is that I don't know the order of circle centres, so it is hard to reconstruct it
+
+		geometry::polygon2d cell;
+
+		std::vector<triangulation_data*> cell_triangles;
+
+		// finding all triangles what have a main (cell) point
+		for (auto& a : triang_data) {
+			auto& ind = a.indexes;
+			if ((ind[0] == cell_index) || (ind[1] == cell_index) || (ind[2] == cell_index))
+			{
+				cell_triangles.push_back(std::addressof(a));
+			}
+		}
+
+
+		// central point
+		geometry::point2d p = std::accumulate(triang_data.begin(),triang_data.end(),geometry::point2d{},
+		[](geometry::point2d p , triangulation_data& a) { return p + a.outer_circle->center;});
+		p.x() /= triang_data.size();
+		p.y() /= triang_data.size();
+
+		// we must go through triangles in a certain order
+		std::vector<std::pair<double,int>> angles(cell_triangles.size());
+		for (auto l = 0; l < angles.size(); l++) {
+			geometry::vector2d v = cell_triangles[l]->outer_circle->center - p;
+			angles[l] = {atan2(v.y(),v.x()),l};
+		}
+
+		std::sort(angles.begin(),angles.end());
+
+		geometry::polygon2d poly; poly.resize(angles.size());
+		for (auto l = 0; l < angles.size(); l++) {
+			poly[l] = cell_triangles[angles[l].second]->outer_circle->center;
+		}
+
+		return poly;
+	}
+	template <typename InputIt>
+	std::vector<geometry::polygon2d> get_cells(InputIt begin, InputIt end, std::vector<triangulation_data>& triang_data)
+	{
+		std::vector<geometry::polygon2d> cells(begin - end);
+		for (auto i = 0 ; i < cells.size(); i++) {
+			cells[i] = generate_dirichlet_cell(i, triang_data);
+		}
+		return cells;
+	}
 };
+
+#endif //TRIANGULATION_DELONE_H 
+#define TRIANGULATION_DELONE_H

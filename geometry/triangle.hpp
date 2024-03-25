@@ -61,9 +61,9 @@ namespace geometry {
     {
         auto t_ = t;
         auto p = middle_point({t_.p1,t_.p2,t_.p3});
-        t_.p1 = lerp(t_.p1, p, scale);
-        t_.p2 = lerp(t_.p2, p, scale);
-        t_.p3 = lerp(t_.p3, p, scale);
+        t_.p1 = lerp( p,t_.p1, scale);
+        t_.p2 = lerp( p,t_.p2, scale);
+        t_.p3 = lerp( p,t_.p3, scale);
 
         return t_;
     }
